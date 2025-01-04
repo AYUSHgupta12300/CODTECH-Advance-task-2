@@ -1,1 +1,9 @@
-# CODTECH-Advance-task-2
+**Name**: AYUSH GUPTA 
+**Company**: CODTECH IT SOLUTIONS 
+**ID**: CTO8EWT 
+**Domain**: Python programming 
+**Duration**: DEC 2024 to JAN 2024 
+**Mentor**: SRAVANI GOUNI
+
+**Overview of the Project** 
+**Project**:DEVELOP A SCRIPT THAT READS DATA FROM A FILE, ANALYZES IT, AND GENERATES A FORMATTED PDF REPORT USING LIBRARIE LIKE FPDF OR REPORTLAB.
