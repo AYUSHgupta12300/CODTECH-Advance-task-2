@@ -1,0 +1,64 @@
+import pandas as pd
+from fpdf import FPDF
+
+# Read and analyze data
+def analyze_data(file_path):
+    # Load data from a CSV file
+    data = pd.read_csv(file_path)
+    
+    # Perform basic analysis
+    summary = {
+        "Total Rows": len(data),
+        "Columns": list(data.columns),
+        "Missing Values": data.isnull().sum().to_dict(),
+        "Basic Stats": data.describe(include="all").to_string()
+    }
+    return summary
+
+# Generate a PDF report
+class PDFReport(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 12)
+        self.cell(0, 10, 'Data Analysis Report', border=0, ln=1, align='C')
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, f'Page {self.page_no()}', align='C')
+
+def generate_pdf_report(summary, output_file):
+    pdf = PDFReport()
+    pdf.add_page()
+    pdf.set_font('Arial', '', 12)
+    
+    # Add content
+    pdf.cell(0, 10, 'Report Summary', ln=True, align='L')
+    pdf.ln(5)
+    
+    pdf.cell(0, 10, f"Total Rows: {summary['Total Rows']}", ln=True)
+    pdf.cell(0, 10, f"Columns: {', '.join(summary['Columns'])}", ln=True)
+    pdf.ln(5)
+    
+    pdf.cell(0, 10, "Missing Values:", ln=True)
+    for column, missing in summary['Missing Values'].items():
+        pdf.cell(0, 10, f"  {column}: {missing}", ln=True)
+    pdf.ln(5)
+    
+    pdf.cell(0, 10, "Basic Statistics:", ln=True)
+    pdf.multi_cell(0, 10, summary['Basic Stats'])
+    
+    pdf.output(output_file)
+    print(f"PDF report generated: {output_file}")
+
+# Main script
+if _name_ == "_main_":
+    input_file = "data.csv"  # Replace with your CSV file path
+    output_file = "data_analysis_report.pdf"
+    
+    try:
+        summary = analyze_data(input_file)
+        generate_pdf_report(summary, output_file)
+    except FileNotFoundError:
+        print(f"File not found: {input_file}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
